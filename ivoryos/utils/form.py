@@ -220,7 +220,8 @@ def create_form_for_method(method, method_name, autofill, script=None, design=Tr
         formatted_param_name = format_name(param.name)
         field_kwargs = {
             "label": formatted_param_name,
-            "default": f'#{param.name}' if autofill else (param.default if param.default is not param.empty else ""),
+            "default": f'#{param.name}' if autofill else (param.default if param.default is not param.empty else None),
+            "validators": [InputRequired()] if param.default is param.empty else None,
             **({"script": script} if (autofill or design) else {})
         }
         field_class, placeholder_text = annotation_mapping.get(
