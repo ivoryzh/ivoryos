@@ -255,7 +255,7 @@ def create_form_from_module(sdl_module, autofill: bool, script=None, design=True
         attr = getattr(sdl_module, attr_name)
         if inspect.ismethod(attr) and not attr_name.startswith('_'):
             form_class = create_add_form(attr, attr_name, autofill, script, design)
-            method_forms[attr_name] = form_class()
+            method_forms[format_name(attr_name)] = form_class()
     return method_forms
 
 
