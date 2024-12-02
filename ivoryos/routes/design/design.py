@@ -404,3 +404,13 @@ def delete_action(id):
     script.delete_action(id)
     utils.post_script_file(script)
     return redirect(back)
+
+
+@design.route("/duplicate/<id>", methods=['GET', 'POST'])
+@login_required
+def duplicate_action(id):
+    back = request.referrer
+    script = utils.get_script_file()
+    script.duplicate_action(id)
+    utils.post_script_file(script)
+    return redirect(back)

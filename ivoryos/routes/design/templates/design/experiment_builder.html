@@ -301,8 +301,11 @@
                     <ul class="reorder">
                     {% for button in buttons %}
                         <li id="{{ button['id'] }}" style="list-style-type: none;">
-                        <a href="{{ url_for('design.edit_action', uuid=button['uuid']) }}" type="button" class="btn btn-light" style="{{ button['style'] }}">{{ button['label'] }}</a>
-                        <a href="{{ url_for('design.delete_action', id=button['id']) }}" type="button" class="btn btn-light"><span class="bi bi-trash"></span></a>
+                            <a href="{{ url_for('design.edit_action', uuid=button['uuid']) }}" type="button" class="btn btn-light" style="{{ button['style'] }}">{{ button['label'] }}</a>
+                            {% if not button["instrument"] in ["if","while"] %}
+                                <a href="{{ url_for('design.duplicate_action', id=button['id']) }}" type="button" class="btn btn-light"><span class="bi bi-copy"></span></a>
+                            {% endif %}
+                            <a href="{{ url_for('design.delete_action', id=button['id']) }}" type="button" class="btn btn-light"><span class="bi bi-trash"></span></a>
                         </li>
                     {% endfor %}
                     </ul>

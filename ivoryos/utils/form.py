@@ -313,4 +313,4 @@ def create_action_button(s: dict):
                 arg_string = f"= {s['args']}"
 
         text = f"{prefix}{action_text}  {arg_string}"
-    return dict(label=text, style=style, uuid=s["uuid"], id=s["id"])
+    return dict(label=text, style=style, uuid=s["uuid"], id=s["id"], instrument=s['instrument'])

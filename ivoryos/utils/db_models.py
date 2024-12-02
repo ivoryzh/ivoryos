@@ -197,9 +197,10 @@ class Script(db.Model):
 
     def add_action(self, action: dict):
         current_len = len(self.currently_editing_script)
-        action['id'] = current_len + 1
-        action['uuid'] = uuid.uuid4().fields[-1]
-        self.currently_editing_script.append(action)
+        action_to_add = action.copy()
+        action_to_add['id'] = current_len + 1
+        action_to_add['uuid'] = uuid.uuid4().fields[-1]
+        self.currently_editing_script.append(action_to_add)
         self.currently_editing_order.append(str(current_len + 1))
         self.update_time_stamp()
 
@@ -256,6 +257,23 @@ class Script(db.Model):
         self.currently_editing_script = [action for action in script if action['id'] not in id_to_be_removed]
         self.sort_actions()
         self.update_time_stamp()
+
+    def duplicate_action(self, id: int):
+        action_to_duplicate = next((action for action in self.currently_editing_script if action['id'] == int(id)), None)
+        insert_id = action_to_duplicate.get("id")
+        self.add_action(action_to_duplicate)
+        # print(self.currently_editing_script)
+        if action_to_duplicate is not None:
+            # Update IDs for all subsequent actions
+            for action in self.currently_editing_script:
+                if action['id'] > insert_id:
+                    action['id'] += 1
+            self.currently_editing_script[-1]['id'] = insert_id + 1
+            # Sort actions if necessary and update the time stamp
+            self.sort_actions()
+            self.update_time_stamp()
+        else:
+            raise ValueError("Action not found: Unable to duplicate the action with ID", id)
 
     def config(self, stype):
         """
